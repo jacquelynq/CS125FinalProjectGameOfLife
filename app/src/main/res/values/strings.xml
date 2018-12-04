@@ -5,4 +5,5 @@
     <string name="start_game">Begin playing!</string>
     <string name="edit_mode">Edit Mode</string>
     <string name="imageview_description">Canvas for the Game</string>
+    <string name="play_and_pause">Button for play and pause</string>
 </resources>

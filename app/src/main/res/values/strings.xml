@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">CS125CanvasGameOfLife</string>
+    <string name="keep_tapping">Keep tapping.</string>
+    <string name="done">Done!</string>
+    <string name="start_game">Begin playing!</string>
+    <string name="edit_mode">Edit Mode</string>
+    <string name="imageview_description">Canvas for the Game</string>
+</resources>

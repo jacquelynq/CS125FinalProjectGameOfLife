@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Bitmap;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.graphics.Rect;
 import android.support.v4.content.res.ResourcesCompat;
@@ -29,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
     public boolean griddrawn = false;
     public boolean[][] cellstate;
 
+    private ImageButton imgBtn;
+    private boolean paused = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +50,22 @@ public class MainActivity extends AppCompatActivity {
 
         mImageView = (ImageView) findViewById(R.id.myimageview);
         mswitch = (Switch) findViewById(R.id.switch1);
+        imgBtn = (ImageButton)findViewById(R.id.play_or_pause);
+        imgBtn.setImageResource(R.drawable.ic_play_arrow_black_24dp);
+
+        imgBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!paused) {
+                    imgBtn.setImageResource(R.drawable.ic_pause_black_24dp);
+                    paused = true;
+                } else {
+                    imgBtn.setImageResource(R.drawable.ic_play_arrow_black_24dp);
+                    paused = false;
+                }
+            }
+        });
+
 
     }
 
@@ -126,5 +146,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
+
 }
 

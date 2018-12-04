@@ -13,37 +13,48 @@ import android.widget.Switch;
 import android.view.MotionEvent;
 
 public class MainActivity extends AppCompatActivity {
-
+    // sets variables for drawing
     private Canvas mCanvas;
-    private Paint mPaint = new Paint();
-    private Paint mPaintText = new Paint(Paint.UNDERLINE_TEXT_FLAG);
     private Bitmap mBitmap;
-    private Switch mswitch;
     private ImageView mImageView;
-    private Rect mRect = new Rect();
+
+    private Paint mPaintLive = new Paint();
+    private Paint mPaintDead = new Paint();
     private int mColorBackground;
-    private int mColorRectangle;
-    private int mColorAccent;
+    private int mColorLive;
+    private int mColorDead;
+
+    private Rect mRect = new Rect();
     private int vWidth, vHeight;
+    private int numColumns, numRows;
     private int cellDim;
+    private int border;
+
+    // sets variable for buttons
+    private Switch mswitch;
+
+    // sets variables for tracking game of life
     public boolean griddrawn = false;
     public boolean[][] cellstate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // sets content view
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // sets color variables
         mColorBackground = ResourcesCompat.getColor(getResources(),
                 R.color.colorBackground, null);
-        mColorRectangle = ResourcesCompat.getColor(getResources(),
-                R.color.colorRectangle, null);
-        mColorAccent = ResourcesCompat.getColor(getResources(),
-                R.color.colorAccent, null);
-        mPaint.setColor(mColorRectangle);
-        mPaintText.setColor(ResourcesCompat.getColor(getResources(),
-                R.color.colorPrimaryDark, null));
+        mColorLive = ResourcesCompat.getColor(getResources(),
+                R.color.colorLive, null);
+        mColorDead = ResourcesCompat.getColor(getResources(),
+                R.color.colorDead, null);
 
+        mPaintDead.setColor(mColorDead);
+        mPaintLive.setColor(mColorLive);
+
+        // sets imageview and switch variables
         mImageView = (ImageView) findViewById(R.id.myimageview);
         mswitch = (Switch) findViewById(R.id.switch1);
 
@@ -59,21 +70,24 @@ public class MainActivity extends AppCompatActivity {
         mCanvas = new Canvas(mBitmap);
         mCanvas.drawColor(mColorBackground);
 
-
-        int numColumns = 15;
-        int numRows = 15;
+        // sets gird parameters for drawing
+        numColumns = 15;
+        numRows = 15;
         int cellWidth, cellHeight;
         cellWidth = vWidth / numColumns;
         cellHeight = vHeight / numRows;
         cellDim = Math.min(cellHeight, cellWidth);
-        int border = 50 / numColumns;
+        border = 50 / numColumns;
+
+        //creates boolean array to tack game of life
         cellstate = new boolean[numRows][numColumns];
 
+        // draws grid
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numColumns; j++) {
                 mRect.set(i*cellDim + border, j*cellDim + border, (i + 1)*cellDim - border,
                         (j + 1)*cellDim - border);
-                mCanvas.drawRect(mRect, mPaint);
+                mCanvas.drawRect(mRect, mPaintDead);
                 cellstate[i][j] = false;
             }
         }
@@ -82,18 +96,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateGrid(View view, Canvas mCanvas) {
-        int numColumns = 15;
-        int numRows = 15;
-        int border = 50 / numColumns;
 
+        // updates grid with new colors based on true / false
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numColumns; j++) {
                 mRect.set(i*cellDim + border, j*cellDim + border, (i + 1)*cellDim - border,
                         (j + 1)*cellDim - border);
                 if (cellstate[i][j]) {
-                    mCanvas.drawRect(mRect, mPaintText);
+                    mCanvas.drawRect(mRect, mPaintLive);
                 } else {
-                    mCanvas.drawRect(mRect, mPaint);
+                    mCanvas.drawRect(mRect, mPaintDead);
                 }
             }
         }
@@ -101,11 +113,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public boolean onTouchEvent(MotionEvent event) {
+        // gets absolute coordinates of where event happened
         float x = event.getX();
         float y = event.getY();
+
+        // takes account of difference between image view coordinates and absolute coordinates
         int[] posXY = new int[2];
         mImageView.getLocationOnScreen(posXY);
+        x -= posXY[0];
         y -= posXY[1];
+
+        // runs code depending on which action used
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 if (!griddrawn) {

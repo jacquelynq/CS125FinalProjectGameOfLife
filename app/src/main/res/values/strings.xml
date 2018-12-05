@@ -6,4 +6,6 @@
     <string name="edit_mode">Edit Mode</string>
     <string name="imageview_description">Canvas for the Game</string>
     <string name="play_and_pause">Button for play and pause</string>
+    <string name="Click_anywhere_to_launch_simulation">Click anywhere to launch simulation </string>
+
 </resources>

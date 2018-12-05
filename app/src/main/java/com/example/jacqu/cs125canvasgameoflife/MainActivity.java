@@ -12,6 +12,7 @@ import android.graphics.Rect;
 import android.support.v4.content.res.ResourcesCompat;
 import android.widget.Switch;
 import android.view.MotionEvent;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageButton imgBtn;
     private boolean paused = false;
+    public TextView initialMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         mswitch = (Switch) findViewById(R.id.switch1);
         imgBtn = (ImageButton)findViewById(R.id.play_or_pause);
         imgBtn.setImageResource(R.drawable.ic_play_arrow_black_24dp);
+        initialMessage = findViewById(R.id.textView);
 
         imgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,12 +64,32 @@ public class MainActivity extends AppCompatActivity {
                     paused = true;
                 } else {
                     imgBtn.setImageResource(R.drawable.ic_play_arrow_black_24dp);
+
                     paused = false;
                 }
             }
         });
 
 
+    }
+    public void helper(View view, Canvas mCanvas) {
+        int numColumns = 15;
+        int numRows = 15;
+        int cellWidth, cellHeight;
+        cellWidth = vWidth / numColumns;
+        cellHeight = vHeight / numRows;
+        cellDim = Math.min(cellHeight, cellWidth);
+        int border = 50 / numColumns;
+        cellstate = new boolean[numRows][numColumns];
+
+        for (int i = 0; i < numRows; i++) {
+            for (int j = 0; j < numColumns; j++) {
+                if (cellstate[i][j]) {
+                    if (cellstate
+                } else {
+                }
+            }
+        }
     }
 
     public void createGrid(View view) {
@@ -78,6 +101,10 @@ public class MainActivity extends AppCompatActivity {
         mImageView.setImageBitmap(mBitmap);
         mCanvas = new Canvas(mBitmap);
         mCanvas.drawColor(mColorBackground);
+        if (initialMessage.isShown()) {
+
+        }
+
 
 
         int numColumns = 15;

@@ -59,20 +59,27 @@ public class MainActivity extends AppCompatActivity {
         mPaintLive.setColor(mColorLive);
 
         // sets imageview and switch variables
-        mImageView = (ImageView) findViewById(R.id.myimageview);
-        mswitch = (Switch) findViewById(R.id.switch1);
-        imgBtn = (ImageButton)findViewById(R.id.play_or_pause);
+        mImageView = findViewById(R.id.myimageview);
+        mswitch = findViewById(R.id.switch1);
+        imgBtn = findViewById(R.id.play_or_pause);
+        // lanch background is a temp file
         imgBtn.setImageResource(R.drawable.ic_play_arrow_black_24dp);
 
         imgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!paused) {
+                if (!paused && !mswitch.isChecked()) {
+                    // launch background is a temp file
                     imgBtn.setImageResource(R.drawable.ic_pause_black_24dp);
                     paused = true;
-                } else {
+                    updategame();
+                    updateGrid(mImageView);
+                } else if (!mswitch.isChecked()) {
+                    // launch foreground is a temp file
                     imgBtn.setImageResource(R.drawable.ic_play_arrow_black_24dp);
                     paused = false;
+                    updategame();
+                    updateGrid(mImageView);
                 }
             }
         });
@@ -115,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
         view.invalidate();
     }
 
-    public void updateGrid(View view, Canvas mCanvas) {
+    public void updateGrid(View view) {
 
         // updates grid with new colors based on true / false
         for (int i = 0; i < numRows; i++) {
@@ -153,17 +160,168 @@ public class MainActivity extends AppCompatActivity {
                     int i = (int) x / cellDim;
                     int j = (int) (y) / cellDim;
                     if (i >= 0 && i < 15 && j >= 0 && j < 15 && mswitch.isChecked()) {
-                        if (cellstate[i][j]) {
-                            cellstate[i][j] = false;
-                        } else {
-                            cellstate[i][j] = true;
-                        }
-                        updateGrid(mImageView, mCanvas);
+                        cellstate[i][j] = !cellstate[i][j];
+                        updateGrid(mImageView);
                     }
                 }
         }
         return true;
     }
-
+    // some extra, fun little functions
+    public void resetgame() {
+        for (int i = 0; i < 15; i ++) {
+            for (int j = 0; j < 15; j++) {
+                cellstate[i][j] = false;
+            }
+        }
+    }
+    public void inversegame() {
+        for (int i = 0; i < 15; i ++) {
+            for (int j = 0; j < 15; j++) {
+                cellstate[i][j] = !cellstate[i][j];
+            }
+        }
+    }
+    /**
+     * This is where the rules of the game of life are implemented
+     */
+    public void updategame() {
+        // checked identifies all squares that need to change
+        boolean[][] checked = new boolean[15][15];
+        for (int i = 0; i < 15; i ++) {
+            for (int j = 0; j < 15; j++) {
+                int neighbors = countNeighbors(i, j);
+                // cell dies if neighbors is less than 2 or greater then 3
+                checked[i][j] = false;
+                // live condition is if neighbors is between 2 and 3
+                if (neighbors > 1 && neighbors < 4) {
+                    checked[i][j] = true;
+                }
+            }
+        }
+        for (int i = 0; i < 15; i ++) {
+            for (int j = 0; j < 15; j++) {
+                cellstate[i][j] = checked[i][j];
+            }
+        }
+    }
+    /**
+     * Function to count the number of live neighbors for a given square
+     * @param i row number
+     * @param j column number
+     *          This could be implemented so much more elegantly with graphs I bet.
+     */
+    private int countNeighbors(int i, int j) {
+        int neighbors = 0;
+        // if square is not on an edge
+        if (i > 0 && j > 0 && i < 14 && j < 14) {
+            for (int row = i - 1; row <= i + 1; row++) {
+                for (int col = j - 1; col <= j + 1; col++) {
+                    if (!(col == j && row == i)) {
+                        if (cellstate[row][col]) {
+                            neighbors++;
+                        }
+                    }
+                }
+            }
+        }
+        // if square is on left edge (not corner)
+        if (i == 0 && j != 0 && j != 14) {
+            for (int row = i; row <= i + 1; row++) {
+                for (int col = j - 1; col <= j + 1; col++) {
+                    if (!(col == j && row == i)) {
+                        if (cellstate[row][col]) {
+                            neighbors++;
+                        }
+                    }
+                }
+            }
+        }
+        // if square is on right edge (not corner)
+        if (i == 14 && j != 0 && j != 14) {
+            for (int row = i - 1; row <= i; row++) {
+                for (int col = j - 1; col <= j + 1; col++) {
+                    if (!(col == j && row == i)) {
+                        if (cellstate[row][col]) {
+                            neighbors++;
+                        }
+                    }
+                }
+            }
+        }
+        // if square is on upper edge (not corner)
+        if (j == 0 && i != 0 && i != 14) {
+            for (int row = i - 1; row <= i + 1; row++) {
+                for (int col = j; col <= j + 1; col++) {
+                    if (!(col == j && row == i)) {
+                        if (cellstate[row][col]) {
+                            neighbors++;
+                        }
+                    }
+                }
+            }
+        }
+        // if square is on bottom edge (not corner)
+        if (j == 14 && i != 0 && i != 14) {
+            for (int row = i - 1; row <= i + 1; row++) {
+                for (int col = j - 1; col <= j; col++) {
+                    if (!(col == j && row == i)) {
+                        if (cellstate[row][col]) {
+                            neighbors++;
+                        }
+                    }
+                }
+            }
+        }
+        // top left corner
+        if (i == 0 && j == 0) {
+            if (cellstate[1][0]) {
+                neighbors++;
+            }
+            if (cellstate[1][1]) {
+                neighbors++;
+            }
+            if (cellstate[0][1]) {
+                neighbors++;
+            }
+        }
+        // bottom left corner
+        if (i == 0 && j == 14) {
+            if (cellstate[0][13]) {
+                neighbors++;
+            }
+            if (cellstate[1][13]) {
+                neighbors++;
+            }
+            if (cellstate[1][14]) {
+                neighbors++;
+            }
+        }
+        // top right corner
+        if (i == 14 && j == 0) {
+            if (cellstate[13][0]) {
+                neighbors++;
+            }
+            if (cellstate[13][1]) {
+                neighbors++;
+            }
+            if (cellstate[14][1]) {
+                neighbors++;
+            }
+        }
+        // bottom right corner
+        if (i == 14 && j == 14) {
+            if (cellstate[13][13]) {
+                neighbors++;
+            }
+            if (cellstate[14][13]) {
+                neighbors++;
+            }
+            if (cellstate[13][14]) {
+                neighbors++;
+            }
+        }
+        return neighbors;
+    }
 }
 

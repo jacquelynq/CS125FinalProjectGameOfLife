@@ -41,8 +41,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean griddrawn = false;
     public boolean[][] cellstate;
 
+    // sets variables for play/pause button
     private ImageButton imgBtn;
     private boolean paused = false;
+    private boolean stopanimating = false;
     public TextView initialMessage;
 
     @Override
@@ -68,18 +70,20 @@ public class MainActivity extends AppCompatActivity {
         imgBtn = findViewById(R.id.play_or_pause);
         // lanch background is a temp file
         imgBtn.setImageResource(R.drawable.ic_play_arrow_black_24dp);
-        initialMessage = findViewById(R.id.textView);
+//        initialMessage = findViewById(R.id.textView);
         imgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!paused && !(mswitch.isChecked())) {
-                    imgBtn.setImageResource(R.drawable.ic_pause_black_24dp);
+                if (!paused) {
                     paused = true;
-                } else if (paused && !(mswitch.isChecked())){
                     imgBtn.setImageResource(R.drawable.ic_play_arrow_black_24dp);
-
+                    stopanimating = true;
+                } else if (paused){
                     paused = false;
+                    imgBtn.setImageResource(R.drawable.ic_pause_black_24dp);
+                    stopanimating = false;
                 }
+                animation.run();
             }
         });
 
@@ -88,24 +92,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (mswitch.isChecked()) {
                     imgBtn.setImageResource(R.drawable.ic_play_arrow_black_24dp);
+                    stopanimating = true;
+                    paused = true;
                 }
             }
         });
 
-
-
-
     }
-    public void helper(View view, Canvas mCanvas) {
-        int numColumns = 15;
-        int numRows = 15;
-        int cellWidth, cellHeight;
-        cellWidth = vWidth / numColumns;
-        cellHeight = vHeight / numRows;
-        cellDim = Math.min(cellHeight, cellWidth);
-        int border = 50 / numColumns;
-        cellstate = new boolean[numRows][numColumns];
-    }
+
 
     public void createGrid(View view) {
         // gets height and width of the screen
@@ -116,9 +110,9 @@ public class MainActivity extends AppCompatActivity {
         mImageView.setImageBitmap(mBitmap);
         mCanvas = new Canvas(mBitmap);
         mCanvas.drawColor(mColorBackground);
-        if (initialMessage.isShown()) {
-
-        }
+//        if (initialMessage.isShown()) {
+//
+//        }
 
 
         // sets gird parameters for drawing
@@ -193,11 +187,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     Handler handler = new Handler(Looper.getMainLooper());
-    Runnable movePlayer0Runnable = new Runnable() {
+    Runnable animation = new Runnable() {
         public void run() {
-            updategame();
-            updateGrid(mImageView, mCanvas);
-            handler.postDelayed(this, 5000); //in 5 sec player0 will move again
+            if (!stopanimating) {
+                updategame();
+                updateGrid(mImageView);
+                handler.postDelayed(this, 500); //in 5 sec player0 will move again
+            }
         }
     };
   

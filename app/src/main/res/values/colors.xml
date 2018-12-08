@@ -5,4 +5,6 @@
     <color name="colorAccent">#D81B60</color>
     <color name="colorRectangle">#ebc1c0c0</color>
     <color name="colorBackground">#000000</color>
+    <color name="colorLive">#59b3aa</color>
+    <color name="colorDead">#5e5e5e</color>
 </resources>

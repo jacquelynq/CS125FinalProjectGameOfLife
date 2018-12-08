@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Bitmap;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.graphics.Rect;
@@ -45,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean paused = false;
     public TextView initialMessage;
     private boolean stopAnimating;
+    private Button replay;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
         mImageView = findViewById(R.id.myimageview);
         mswitch = findViewById(R.id.switch1);
         imgBtn = findViewById(R.id.play_or_pause);
+        replay = findViewById(R.id.replay_button);
+        replay.setBackgroundResource(R.drawable.ic_replay_black_24dp);
         // lanch background is a temp file
         imgBtn.setImageResource(R.drawable.ic_play_arrow_black_24dp);
         initialMessage = findViewById(R.id.textView);
@@ -121,9 +126,6 @@ public class MainActivity extends AppCompatActivity {
         mImageView.setImageBitmap(mBitmap);
         mCanvas = new Canvas(mBitmap);
         mCanvas.drawColor(mColorBackground);
-        if (initialMessage.isShown()) {
-
-        }
 
 
         // sets gird parameters for drawing

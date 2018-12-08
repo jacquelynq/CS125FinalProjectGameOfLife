@@ -1,5 +1,7 @@
 package com.example.jacqu.cs125canvasgameoflife;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.graphics.Canvas;
@@ -55,20 +57,30 @@ public class MainActivity extends AppCompatActivity {
         imgBtn = (ImageButton)findViewById(R.id.play_or_pause);
         imgBtn.setImageResource(R.drawable.ic_play_arrow_black_24dp);
         initialMessage = findViewById(R.id.textView);
-
         imgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!paused) {
+                if (!paused && !(mswitch.isChecked())) {
                     imgBtn.setImageResource(R.drawable.ic_pause_black_24dp);
                     paused = true;
-                } else {
+                } else if (paused && !(mswitch.isChecked())){
                     imgBtn.setImageResource(R.drawable.ic_play_arrow_black_24dp);
 
                     paused = false;
                 }
             }
         });
+
+        mswitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mswitch.isChecked()) {
+                    imgBtn.setImageResource(R.drawable.ic_play_arrow_black_24dp);
+                }
+            }
+        });
+
+
 
 
     }
@@ -81,15 +93,6 @@ public class MainActivity extends AppCompatActivity {
         cellDim = Math.min(cellHeight, cellWidth);
         int border = 50 / numColumns;
         cellstate = new boolean[numRows][numColumns];
-
-        for (int i = 0; i < numRows; i++) {
-            for (int j = 0; j < numColumns; j++) {
-                if (cellstate[i][j]) {
-                    if (cellstate
-                } else {
-                }
-            }
-        }
     }
 
     public void createGrid(View view) {
@@ -173,6 +176,18 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
+
+
+
+    Handler handler = new Handler(Looper.getMainLooper());
+    Runnable movePlayer0Runnable = new Runnable() {
+        public void run() {
+            updateGame();
+            updateGrid(mImageView, mCanvas);
+            handler.postDelayed(this, 5000); //in 5 sec player0 will move again
+        }
+    };
+
 
 }
 

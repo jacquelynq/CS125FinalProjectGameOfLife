@@ -68,18 +68,14 @@ public class MainActivity extends AppCompatActivity {
         imgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!paused && !mswitch.isChecked()) {
+                if (!paused) {
                     // launch background is a temp file
                     imgBtn.setImageResource(R.drawable.ic_pause_black_24dp);
                     paused = true;
-                    updategame();
-                    updateGrid(mImageView);
-                } else if (!mswitch.isChecked()) {
+                } else {
                     // launch foreground is a temp file
                     imgBtn.setImageResource(R.drawable.ic_play_arrow_black_24dp);
                     paused = false;
-                    updategame();
-                    updateGrid(mImageView);
                 }
             }
         });
@@ -191,9 +187,9 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < 15; i ++) {
             for (int j = 0; j < 15; j++) {
                 int neighbors = countNeighbors(i, j);
-                // cell dies if neighbors is less than 2 or greater then 3
+                // cell dies if neighbors is less than 2 or greater then 4
                 checked[i][j] = false;
-                // live condition is if neighbors is between 2 and 3
+                // live condition is if neighbors is between 3 and 4
                 if (neighbors > 1 && neighbors < 4) {
                     checked[i][j] = true;
                 }

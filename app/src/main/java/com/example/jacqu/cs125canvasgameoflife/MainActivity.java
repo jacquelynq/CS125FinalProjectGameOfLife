@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton imgBtn;
     private boolean paused = false;
     public TextView initialMessage;
+    private boolean stopAnimating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,14 +73,16 @@ public class MainActivity extends AppCompatActivity {
         imgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!paused && !(mswitch.isChecked())) {
-                    imgBtn.setImageResource(R.drawable.ic_pause_black_24dp);
+                if (!paused) {
                     paused = true;
-                } else if (paused && !(mswitch.isChecked())){
                     imgBtn.setImageResource(R.drawable.ic_play_arrow_black_24dp);
-
+                    stopAnimating = true;
+                } else if (paused ){
+                    imgBtn.setImageResource(R.drawable.ic_pause_black_24dp);
                     paused = false;
+                    stopAnimating = false;
                 }
+                animate.run();
             }
         });
 
@@ -88,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (mswitch.isChecked()) {
                     imgBtn.setImageResource(R.drawable.ic_play_arrow_black_24dp);
+                    paused = true;
+                    stopAnimating = true;
                 }
             }
         });
@@ -193,11 +198,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     Handler handler = new Handler(Looper.getMainLooper());
-    Runnable movePlayer0Runnable = new Runnable() {
+    Runnable animate = new Runnable() {
         public void run() {
-            updategame();
-            updateGrid(mImageView, mCanvas);
-            handler.postDelayed(this, 5000); //in 5 sec player0 will move again
+            if (!stopAnimating) {
+                updategame();
+                updateGrid(mImageView);
+                handler.postDelayed(this, 500); //in 5 sec player0 will move again
+            }
         }
     };
   

@@ -176,13 +176,15 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
+    public void updategame() {
 
+    }
 
 
     Handler handler = new Handler(Looper.getMainLooper());
     Runnable movePlayer0Runnable = new Runnable() {
         public void run() {
-            updateGame();
+            updategame();
             updateGrid(mImageView, mCanvas);
             handler.postDelayed(this, 5000); //in 5 sec player0 will move again
         }

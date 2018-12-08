@@ -1,5 +1,7 @@
 package com.example.jacqu.cs125canvasgameoflife;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.graphics.Canvas;
@@ -12,6 +14,7 @@ import android.graphics.Rect;
 import android.support.v4.content.res.ResourcesCompat;
 import android.widget.Switch;
 import android.view.MotionEvent;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     // sets variables for drawing
@@ -40,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageButton imgBtn;
     private boolean paused = false;
+    public TextView initialMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,23 +68,43 @@ public class MainActivity extends AppCompatActivity {
         imgBtn = findViewById(R.id.play_or_pause);
         // lanch background is a temp file
         imgBtn.setImageResource(R.drawable.ic_play_arrow_black_24dp);
-
+        initialMessage = findViewById(R.id.textView);
         imgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!paused) {
-                    // launch background is a temp file
+                if (!paused && !(mswitch.isChecked())) {
                     imgBtn.setImageResource(R.drawable.ic_pause_black_24dp);
                     paused = true;
-                } else {
-                    // launch foreground is a temp file
+                } else if (paused && !(mswitch.isChecked())){
                     imgBtn.setImageResource(R.drawable.ic_play_arrow_black_24dp);
+
                     paused = false;
                 }
             }
         });
 
+        mswitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mswitch.isChecked()) {
+                    imgBtn.setImageResource(R.drawable.ic_play_arrow_black_24dp);
+                }
+            }
+        });
 
+
+
+
+    }
+    public void helper(View view, Canvas mCanvas) {
+        int numColumns = 15;
+        int numRows = 15;
+        int cellWidth, cellHeight;
+        cellWidth = vWidth / numColumns;
+        cellHeight = vHeight / numRows;
+        cellDim = Math.min(cellHeight, cellWidth);
+        int border = 50 / numColumns;
+        cellstate = new boolean[numRows][numColumns];
     }
 
     public void createGrid(View view) {
@@ -92,6 +116,10 @@ public class MainActivity extends AppCompatActivity {
         mImageView.setImageBitmap(mBitmap);
         mCanvas = new Canvas(mBitmap);
         mCanvas.drawColor(mColorBackground);
+        if (initialMessage.isShown()) {
+
+        }
+
 
         // sets gird parameters for drawing
         numColumns = 15;
@@ -163,6 +191,16 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
+
+    Handler handler = new Handler(Looper.getMainLooper());
+    Runnable movePlayer0Runnable = new Runnable() {
+        public void run() {
+            updategame();
+            updateGrid(mImageView, mCanvas);
+            handler.postDelayed(this, 5000); //in 5 sec player0 will move again
+        }
+    };
+  
     // some extra, fun little functions
     public void resetgame() {
         for (int i = 0; i < 15; i ++) {

@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     // sets variable for buttons
     private Switch mswitch;
+    private Switch sswitch;
 
     // sets variables for tracking game of life
     public boolean griddrawn = false;
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         // sets imageview and switch variables
         mImageView = findViewById(R.id.myimageview);
         mswitch = findViewById(R.id.switch1);
+        sswitch = findViewById(R.id.switch2);
         imgBtn = findViewById(R.id.play_or_pause);
         // lanch background is a temp file
         imgBtn.setImageResource(R.drawable.ic_play_arrow_black_24dp);
@@ -86,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
                 animation.run();
             }
         });
-
         mswitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -266,6 +267,13 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
+            if (sswitch.isChecked()) {
+                for (int col = j - 1; col <= j + 1; col++) {
+                    if (cellstate[14][j]) {
+                        neighbors++;
+                    }
+                }
+            }
         }
         // if square is on right edge (not corner)
         if (i == 14 && j != 0 && j != 14) {
@@ -278,6 +286,14 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
+            if (sswitch.isChecked()) {
+                for (int col = j - 1; col <= j + 1; col++) {
+                    if (cellstate[0][j]) {
+                        neighbors++;
+                    }
+                }
+            }
+            // turns map into sphere
         }
         // if square is on upper edge (not corner)
         if (j == 0 && i != 0 && i != 14) {
@@ -290,6 +306,14 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
+            if (sswitch.isChecked()) {
+                for (int row = i - 1; row <= i + 1; row++) {
+                    if (cellstate[i][14]) {
+                        neighbors++;
+                    }
+                }
+            }
+
         }
         // if square is on bottom edge (not corner)
         if (j == 14 && i != 0 && i != 14) {
@@ -299,6 +323,13 @@ public class MainActivity extends AppCompatActivity {
                         if (cellstate[row][col]) {
                             neighbors++;
                         }
+                    }
+                }
+            }
+            if (sswitch.isChecked()) {
+                for (int row = i - 1; row <= i + 1; row++) {
+                    if (cellstate[i][0]) {
+                        neighbors++;
                     }
                 }
             }
@@ -314,6 +345,23 @@ public class MainActivity extends AppCompatActivity {
             if (cellstate[0][1]) {
                 neighbors++;
             }
+            if (sswitch.isChecked()) {
+                if (cellstate[0][14]) {
+                    neighbors++;
+                }
+                if (cellstate[14][0]) {
+                    neighbors++;
+                }
+                if (cellstate[14][1]) {
+                    neighbors++;
+                }
+                if (cellstate[1][14]) {
+                    neighbors++;
+                }
+                if (cellstate[14][14]) {
+                    neighbors++;
+                }
+            }
         }
         // bottom left corner
         if (i == 0 && j == 14) {
@@ -325,6 +373,23 @@ public class MainActivity extends AppCompatActivity {
             }
             if (cellstate[1][14]) {
                 neighbors++;
+            }
+            if (sswitch.isChecked()) {
+                if (cellstate[1][0]) {
+                    neighbors++;
+                }
+                if (cellstate[0][0]) {
+                    neighbors++;
+                }
+                if (cellstate[14][0]) {
+                    neighbors++;
+                }
+                if (cellstate[14][14]) {
+                    neighbors++;
+                }
+                if (cellstate[14][13]) {
+                    neighbors++;
+                }
             }
         }
         // top right corner
@@ -338,6 +403,23 @@ public class MainActivity extends AppCompatActivity {
             if (cellstate[14][1]) {
                 neighbors++;
             }
+            if (sswitch.isChecked()) {
+                if (cellstate[0][1]) {
+                    neighbors++;
+                }
+                if (cellstate[0][0]) {
+                    neighbors++;
+                }
+                if (cellstate[0][14]) {
+                    neighbors++;
+                }
+                if (cellstate[14][14]) {
+                    neighbors++;
+                }
+                if (cellstate[13][14]) {
+                    neighbors++;
+                }
+            }
         }
         // bottom right corner
         if (i == 14 && j == 14) {
@@ -349,6 +431,23 @@ public class MainActivity extends AppCompatActivity {
             }
             if (cellstate[13][14]) {
                 neighbors++;
+            }
+            if (sswitch.isChecked()) {
+                if (cellstate[13][0]) {
+                    neighbors++;
+                }
+                if (cellstate[14][0]) {
+                    neighbors++;
+                }
+                if (cellstate[0][0]) {
+                    neighbors++;
+                }
+                if (cellstate[0][14]) {
+                    neighbors++;
+                }
+                if (cellstate[0][13]) {
+                    neighbors++;
+                }
             }
         }
         return neighbors;

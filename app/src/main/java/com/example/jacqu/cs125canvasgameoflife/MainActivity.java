@@ -24,9 +24,11 @@ public class MainActivity extends AppCompatActivity {
 
     private Paint mPaintLive = new Paint();
     private Paint mPaintDead = new Paint();
+    private Paint mPaintChoice = new Paint();
     private int mColorBackground;
     private int mColorLive;
     private int mColorDead;
+    private int color_choice;
 
     private Rect mRect = new Rect();
     private int vWidth, vHeight;
@@ -44,6 +46,12 @@ public class MainActivity extends AppCompatActivity {
 
     // sets variables for play/pause button
     private ImageButton imgBtn;
+    private ImageButton clrBtn0;
+    private ImageButton clrBtnA;
+    private ImageButton clrBtnB;
+    private ImageButton clrBtnC;
+    private ImageButton clrBtnD;
+    private ImageButton clrBtnE;
     private boolean paused = false;
     private boolean stopanimating = false;
     public TextView initialMessage;
@@ -61,16 +69,18 @@ public class MainActivity extends AppCompatActivity {
                 R.color.colorLive, null);
         mColorDead = ResourcesCompat.getColor(getResources(),
                 R.color.colorDead, null);
-
+        color_choice = ResourcesCompat.getColor(getResources(),
+                R.color.colorLive, null);
         mPaintDead.setColor(mColorDead);
         mPaintLive.setColor(mColorLive);
+        mPaintChoice.setColor(color_choice);
 
         // sets imageview and switch variables
         mImageView = findViewById(R.id.myimageview);
         mswitch = findViewById(R.id.switch1);
         sswitch = findViewById(R.id.switch2);
         imgBtn = findViewById(R.id.play_or_pause);
-        // lanch background is a temp file
+        // launch background is a temp file
         imgBtn.setImageResource(R.drawable.ic_play_arrow_black_24dp);
 //        initialMessage = findViewById(R.id.textView);
         imgBtn.setOnClickListener(new View.OnClickListener() {
@@ -98,7 +108,66 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
+        clrBtn0 = findViewById(R.id.imageButton0);
+        clrBtn0.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                color_choice = ResourcesCompat.getColor(getResources(),
+                        R.color.colorLive, null);
+                mPaintChoice.setColor(color_choice);
+                updateGrid(mImageView);
+            }
+        });
+        clrBtnB = findViewById(R.id.imageButtonB);
+        clrBtnB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                color_choice = ResourcesCompat.getColor(getResources(),
+                        R.color.colorLiveB, null);
+                mPaintChoice.setColor(color_choice);
+                updateGrid(mImageView);
+            }
+        });
+        clrBtnC = findViewById(R.id.imageButtonC);
+        clrBtnC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                color_choice = ResourcesCompat.getColor(getResources(),
+                        R.color.colorLiveC, null);
+                mPaintChoice.setColor(color_choice);
+                updateGrid(mImageView);
+            }
+        });
+        clrBtnD = findViewById(R.id.imageButtonD);
+        clrBtnD.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                color_choice = ResourcesCompat.getColor(getResources(),
+                        R.color.colorLiveD, null);
+                mPaintChoice.setColor(color_choice);
+                updateGrid(mImageView);
+            }
+        });
+        clrBtnA = findViewById(R.id.imageButtonA);
+        clrBtnA.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                color_choice = ResourcesCompat.getColor(getResources(),
+                        R.color.colorLiveA, null);
+                mPaintChoice.setColor(color_choice);
+                updateGrid(mImageView);
+            }
+        });
+        clrBtnE = findViewById(R.id.imageButtonE);
+        clrBtnE.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                color_choice = ResourcesCompat.getColor(getResources(),
+                        R.color.colorLiveE, null);
+                mPaintChoice.setColor(color_choice);
+                updateGrid(mImageView);
+            }
+        });
     }
 
 
@@ -149,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
                 mRect.set(i*cellDim + border, j*cellDim + border, (i + 1)*cellDim - border,
                         (j + 1)*cellDim - border);
                 if (cellstate[i][j]) {
-                    mCanvas.drawRect(mRect, mPaintLive);
+                    mCanvas.drawRect(mRect, mPaintChoice);
                 } else {
                     mCanvas.drawRect(mRect, mPaintDead);
                 }
@@ -186,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
-
+    // updates the simulation every half second
     Handler handler = new Handler(Looper.getMainLooper());
     Runnable animation = new Runnable() {
         public void run() {
@@ -213,6 +282,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
     /**
      * This is where the rules of the game of life are implemented
      */
@@ -236,6 +306,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
     /**
      * Function to count the number of live neighbors for a given square
      * @param i row number

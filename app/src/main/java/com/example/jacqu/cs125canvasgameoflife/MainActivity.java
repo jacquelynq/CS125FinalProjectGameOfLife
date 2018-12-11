@@ -25,9 +25,11 @@ public class MainActivity extends AppCompatActivity {
 
     private Paint mPaintLive = new Paint();
     private Paint mPaintDead = new Paint();
+    private Paint mPaintChoice = new Paint();
     private int mColorBackground;
     private int mColorLive;
     private int mColorDead;
+    private int color_choice;
 
     private Rect mRect = new Rect();
     private int vWidth, vHeight;
@@ -37,13 +39,22 @@ public class MainActivity extends AppCompatActivity {
 
     // sets variable for buttons
     private Switch mswitch;
+    private Switch sswitch;
 
     // sets variables for tracking game of life
     public boolean griddrawn = false;
     public boolean[][] cellstate;
 
+    // sets variables for play/pause button
     private ImageButton imgBtn;
+    private ImageButton clrBtn0;
+    private ImageButton clrBtnA;
+    private ImageButton clrBtnB;
+    private ImageButton clrBtnC;
+    private ImageButton clrBtnD;
+    private ImageButton clrBtnE;
     private boolean paused = false;
+
     private boolean stopAnimating;
     private ImageButton replay;
     private TextView launch;
@@ -62,18 +73,22 @@ public class MainActivity extends AppCompatActivity {
                 R.color.colorLive, null);
         mColorDead = ResourcesCompat.getColor(getResources(),
                 R.color.colorDead, null);
-
+        color_choice = ResourcesCompat.getColor(getResources(),
+                R.color.colorLive, null);
         mPaintDead.setColor(mColorDead);
         mPaintLive.setColor(mColorLive);
+        mPaintChoice.setColor(color_choice);
 
         // sets imageview and switch variables
         mImageView = findViewById(R.id.myimageview);
         mswitch = findViewById(R.id.switch1);
+        sswitch = findViewById(R.id.switch2);
         imgBtn = findViewById(R.id.play_or_pause);
         replay = findViewById(R.id.replay_button);
         launch = findViewById(R.id.launch);
         // lanch background is a temp file
         imgBtn.setImageResource(R.drawable.ic_play_arrow_black_24dp);
+
         imgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
                 animate.run();
             }
         });
-
         mswitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,21 +123,80 @@ public class MainActivity extends AppCompatActivity {
                 imgBtn.setImageResource(R.drawable.ic_play_arrow_black_24dp);
             }
         });
-
-
-
-
     }
-    public void helper(View view, Canvas mCanvas) {
-        int numColumns = 15;
-        int numRows = 15;
-        int cellWidth, cellHeight;
-        cellWidth = vWidth / numColumns;
-        cellHeight = vHeight / numRows;
-        cellDim = Math.min(cellHeight, cellWidth);
-        int border = 50 / numColumns;
-        cellstate = new boolean[numRows][numColumns];
+//     public void helper(View view, Canvas mCanvas) {
+//         int numColumns = 15;
+//         int numRows = 15;
+//         int cellWidth, cellHeight;
+//         cellWidth = vWidth / numColumns;
+//         cellHeight = vHeight / numRows;
+//         cellDim = Math.min(cellHeight, cellWidth);
+//         int border = 50 / numColumns;
+//         cellstate = new boolean[numRows][numColumns];
+
+   
+        clrBtn0 = findViewById(R.id.imageButton0);
+        clrBtn0.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                color_choice = ResourcesCompat.getColor(getResources(),
+                        R.color.colorLive, null);
+                mPaintChoice.setColor(color_choice);
+                updateGrid(mImageView);
+            }
+        });
+        clrBtnB = findViewById(R.id.imageButtonB);
+        clrBtnB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                color_choice = ResourcesCompat.getColor(getResources(),
+                        R.color.colorLiveB, null);
+                mPaintChoice.setColor(color_choice);
+                updateGrid(mImageView);
+            }
+        });
+        clrBtnC = findViewById(R.id.imageButtonC);
+        clrBtnC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                color_choice = ResourcesCompat.getColor(getResources(),
+                        R.color.colorLiveC, null);
+                mPaintChoice.setColor(color_choice);
+                updateGrid(mImageView);
+            }
+        });
+        clrBtnD = findViewById(R.id.imageButtonD);
+        clrBtnD.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                color_choice = ResourcesCompat.getColor(getResources(),
+                        R.color.colorLiveD, null);
+                mPaintChoice.setColor(color_choice);
+                updateGrid(mImageView);
+            }
+        });
+        clrBtnA = findViewById(R.id.imageButtonA);
+        clrBtnA.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                color_choice = ResourcesCompat.getColor(getResources(),
+                        R.color.colorLiveA, null);
+                mPaintChoice.setColor(color_choice);
+                updateGrid(mImageView);
+            }
+        });
+        clrBtnE = findViewById(R.id.imageButtonE);
+        clrBtnE.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                color_choice = ResourcesCompat.getColor(getResources(),
+                        R.color.colorLiveE, null);
+                mPaintChoice.setColor(color_choice);
+                updateGrid(mImageView);
+            }
+        });
     }
+
 
     public void createGrid(View view) {
         // gets height and width of the screen
@@ -135,7 +208,6 @@ public class MainActivity extends AppCompatActivity {
         mImageView.setImageBitmap(mBitmap);
         mCanvas = new Canvas(mBitmap);
         mCanvas.drawColor(mColorBackground);
-
 
         // sets gird parameters for drawing
         numColumns = 15;
@@ -170,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
                 mRect.set(i*cellDim + border, j*cellDim + border, (i + 1)*cellDim - border,
                         (j + 1)*cellDim - border);
                 if (cellstate[i][j]) {
-                    mCanvas.drawRect(mRect, mPaintLive);
+                    mCanvas.drawRect(mRect, mPaintChoice);
                 } else {
                     mCanvas.drawRect(mRect, mPaintDead);
                 }
@@ -207,8 +279,9 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
-
+    // updates the simulation every half second
     Handler handler = new Handler(Looper.getMainLooper());
+
     Runnable animate = new Runnable() {
         public void run() {
             if (!stopAnimating) {
@@ -236,6 +309,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
     /**
      * This is where the rules of the game of life are implemented
      */
@@ -259,6 +333,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
     /**
      * Function to count the number of live neighbors for a given square
      * @param i row number
@@ -290,6 +365,13 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
+            if (sswitch.isChecked()) {
+                for (int col = j - 1; col <= j + 1; col++) {
+                    if (cellstate[14][j]) {
+                        neighbors++;
+                    }
+                }
+            }
         }
         // if square is on right edge (not corner)
         if (i == 14 && j != 0 && j != 14) {
@@ -302,6 +384,14 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
+            if (sswitch.isChecked()) {
+                for (int col = j - 1; col <= j + 1; col++) {
+                    if (cellstate[0][j]) {
+                        neighbors++;
+                    }
+                }
+            }
+            // turns map into sphere
         }
         // if square is on upper edge (not corner)
         if (j == 0 && i != 0 && i != 14) {
@@ -314,6 +404,14 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
+            if (sswitch.isChecked()) {
+                for (int row = i - 1; row <= i + 1; row++) {
+                    if (cellstate[i][14]) {
+                        neighbors++;
+                    }
+                }
+            }
+
         }
         // if square is on bottom edge (not corner)
         if (j == 14 && i != 0 && i != 14) {
@@ -323,6 +421,13 @@ public class MainActivity extends AppCompatActivity {
                         if (cellstate[row][col]) {
                             neighbors++;
                         }
+                    }
+                }
+            }
+            if (sswitch.isChecked()) {
+                for (int row = i - 1; row <= i + 1; row++) {
+                    if (cellstate[i][0]) {
+                        neighbors++;
                     }
                 }
             }
@@ -338,6 +443,23 @@ public class MainActivity extends AppCompatActivity {
             if (cellstate[0][1]) {
                 neighbors++;
             }
+            if (sswitch.isChecked()) {
+                if (cellstate[0][14]) {
+                    neighbors++;
+                }
+                if (cellstate[14][0]) {
+                    neighbors++;
+                }
+                if (cellstate[14][1]) {
+                    neighbors++;
+                }
+                if (cellstate[1][14]) {
+                    neighbors++;
+                }
+                if (cellstate[14][14]) {
+                    neighbors++;
+                }
+            }
         }
         // bottom left corner
         if (i == 0 && j == 14) {
@@ -349,6 +471,23 @@ public class MainActivity extends AppCompatActivity {
             }
             if (cellstate[1][14]) {
                 neighbors++;
+            }
+            if (sswitch.isChecked()) {
+                if (cellstate[1][0]) {
+                    neighbors++;
+                }
+                if (cellstate[0][0]) {
+                    neighbors++;
+                }
+                if (cellstate[14][0]) {
+                    neighbors++;
+                }
+                if (cellstate[14][14]) {
+                    neighbors++;
+                }
+                if (cellstate[14][13]) {
+                    neighbors++;
+                }
             }
         }
         // top right corner
@@ -362,6 +501,23 @@ public class MainActivity extends AppCompatActivity {
             if (cellstate[14][1]) {
                 neighbors++;
             }
+            if (sswitch.isChecked()) {
+                if (cellstate[0][1]) {
+                    neighbors++;
+                }
+                if (cellstate[0][0]) {
+                    neighbors++;
+                }
+                if (cellstate[0][14]) {
+                    neighbors++;
+                }
+                if (cellstate[14][14]) {
+                    neighbors++;
+                }
+                if (cellstate[13][14]) {
+                    neighbors++;
+                }
+            }
         }
         // bottom right corner
         if (i == 14 && j == 14) {
@@ -373,6 +529,23 @@ public class MainActivity extends AppCompatActivity {
             }
             if (cellstate[13][14]) {
                 neighbors++;
+            }
+            if (sswitch.isChecked()) {
+                if (cellstate[13][0]) {
+                    neighbors++;
+                }
+                if (cellstate[14][0]) {
+                    neighbors++;
+                }
+                if (cellstate[0][0]) {
+                    neighbors++;
+                }
+                if (cellstate[0][14]) {
+                    neighbors++;
+                }
+                if (cellstate[0][13]) {
+                    neighbors++;
+                }
             }
         }
         return neighbors;

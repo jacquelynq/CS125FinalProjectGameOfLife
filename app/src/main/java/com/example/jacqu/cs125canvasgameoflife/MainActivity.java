@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean paused = false;
     public TextView initialMessage;
     private boolean stopAnimating;
-    private Button replay;
+    private ImageButton replay;
 
 
     @Override
@@ -71,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
         mswitch = findViewById(R.id.switch1);
         imgBtn = findViewById(R.id.play_or_pause);
         replay = findViewById(R.id.replay_button);
-        replay.setBackgroundResource(R.drawable.ic_replay_black_24dp);
         // lanch background is a temp file
         imgBtn.setImageResource(R.drawable.ic_play_arrow_black_24dp);
         initialMessage = findViewById(R.id.textView);
@@ -99,6 +98,12 @@ public class MainActivity extends AppCompatActivity {
                     paused = true;
                     stopAnimating = true;
                 }
+            }
+        });
+        replay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetgame();
             }
         });
 
@@ -217,6 +222,8 @@ public class MainActivity extends AppCompatActivity {
                 cellstate[i][j] = false;
             }
         }
+        updategame();
+        updateGrid(mImageView);
     }
     public void inversegame() {
         for (int i = 0; i < 15; i ++) {

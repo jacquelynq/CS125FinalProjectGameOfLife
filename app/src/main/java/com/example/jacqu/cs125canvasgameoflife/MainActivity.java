@@ -123,19 +123,10 @@ public class MainActivity extends AppCompatActivity {
                 imgBtn.setImageResource(R.drawable.ic_play_arrow_black_24dp);
             }
         });
-    }
-//     public void helper(View view, Canvas mCanvas) {
-//         int numColumns = 15;
-//         int numRows = 15;
-//         int cellWidth, cellHeight;
-//         cellWidth = vWidth / numColumns;
-//         cellHeight = vHeight / numRows;
-//         cellDim = Math.min(cellHeight, cellWidth);
-//         int border = 50 / numColumns;
-//         cellstate = new boolean[numRows][numColumns];
 
-   
-        clrBtn0 = findViewById(R.id.imageButton0);
+
+        // color 1
+        ImageButton clrBtn0 = findViewById(R.id.imageButton0);
         clrBtn0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,7 +136,8 @@ public class MainActivity extends AppCompatActivity {
                 updateGrid(mImageView);
             }
         });
-        clrBtnB = findViewById(R.id.imageButtonB);
+        // color 3
+        ImageButton clrBtnB = findViewById(R.id.imageButtonB);
         clrBtnB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -155,7 +147,8 @@ public class MainActivity extends AppCompatActivity {
                 updateGrid(mImageView);
             }
         });
-        clrBtnC = findViewById(R.id.imageButtonC);
+        // color 4
+        ImageButton clrBtnC = findViewById(R.id.imageButtonC);
         clrBtnC.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -165,7 +158,8 @@ public class MainActivity extends AppCompatActivity {
                 updateGrid(mImageView);
             }
         });
-        clrBtnD = findViewById(R.id.imageButtonD);
+        // color 5
+        ImageButton clrBtnD = findViewById(R.id.imageButtonD);
         clrBtnD.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -175,7 +169,8 @@ public class MainActivity extends AppCompatActivity {
                 updateGrid(mImageView);
             }
         });
-        clrBtnA = findViewById(R.id.imageButtonA);
+        // color 2
+        ImageButton clrBtnA = findViewById(R.id.imageButtonA);
         clrBtnA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -185,7 +180,8 @@ public class MainActivity extends AppCompatActivity {
                 updateGrid(mImageView);
             }
         });
-        clrBtnE = findViewById(R.id.imageButtonE);
+        // color 6
+        ImageButton clrBtnE = findViewById(R.id.imageButtonE);
         clrBtnE.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -196,6 +192,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+//     public void helper(View view, Canvas mCanvas) {
+//         int numColumns = 15;
+//         int numRows = 15;
+//         int cellWidth, cellHeight;
+//         cellWidth = vWidth / numColumns;
+//         cellHeight = vHeight / numRows;
+//         cellDim = Math.min(cellHeight, cellWidth);
+//         int border = 50 / numColumns;
+//         cellstate = new boolean[numRows][numColumns];
 
 
     public void createGrid(View view) {

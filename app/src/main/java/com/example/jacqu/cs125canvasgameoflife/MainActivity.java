@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Bitmap;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.graphics.Rect;
@@ -53,8 +54,11 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton clrBtnD;
     private ImageButton clrBtnE;
     private boolean paused = false;
-    private boolean stopanimating = false;
-    public TextView initialMessage;
+
+    private boolean stopAnimating;
+    private ImageButton replay;
+    private TextView launch;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,22 +84,24 @@ public class MainActivity extends AppCompatActivity {
         mswitch = findViewById(R.id.switch1);
         sswitch = findViewById(R.id.switch2);
         imgBtn = findViewById(R.id.play_or_pause);
-        // launch background is a temp file
+        replay = findViewById(R.id.replay_button);
+        launch = findViewById(R.id.launch);
+        // lanch background is a temp file
         imgBtn.setImageResource(R.drawable.ic_play_arrow_black_24dp);
-//        initialMessage = findViewById(R.id.textView);
+
         imgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!paused) {
                     paused = true;
                     imgBtn.setImageResource(R.drawable.ic_play_arrow_black_24dp);
-                    stopanimating = true;
-                } else if (paused){
-                    paused = false;
+                    stopAnimating = true;
+                } else if (paused ){
                     imgBtn.setImageResource(R.drawable.ic_pause_black_24dp);
-                    stopanimating = false;
+                    paused = false;
+                    stopAnimating = false;
                 }
-                animation.run();
+                animate.run();
             }
         });
         mswitch.setOnClickListener(new View.OnClickListener() {
@@ -103,11 +109,32 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (mswitch.isChecked()) {
                     imgBtn.setImageResource(R.drawable.ic_play_arrow_black_24dp);
-                    stopanimating = true;
                     paused = true;
+                    stopAnimating = true;
                 }
             }
         });
+        replay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetgame();
+                stopAnimating = true;
+                paused = true;
+                imgBtn.setImageResource(R.drawable.ic_play_arrow_black_24dp);
+            }
+        });
+    }
+//     public void helper(View view, Canvas mCanvas) {
+//         int numColumns = 15;
+//         int numRows = 15;
+//         int cellWidth, cellHeight;
+//         cellWidth = vWidth / numColumns;
+//         cellHeight = vHeight / numRows;
+//         cellDim = Math.min(cellHeight, cellWidth);
+//         int border = 50 / numColumns;
+//         cellstate = new boolean[numRows][numColumns];
+
+   
         clrBtn0 = findViewById(R.id.imageButton0);
         clrBtn0.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,6 +200,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void createGrid(View view) {
         // gets height and width of the screen
+        launch.setVisibility(View.INVISIBLE);
         vWidth = view.getWidth();
         vHeight = view.getHeight();
         // creates bitmap, imageview object, and canvas to support drawable image
@@ -180,10 +208,6 @@ public class MainActivity extends AppCompatActivity {
         mImageView.setImageBitmap(mBitmap);
         mCanvas = new Canvas(mBitmap);
         mCanvas.drawColor(mColorBackground);
-//        if (initialMessage.isShown()) {
-//
-//        }
-
 
         // sets gird parameters for drawing
         numColumns = 15;
@@ -257,9 +281,10 @@ public class MainActivity extends AppCompatActivity {
     }
     // updates the simulation every half second
     Handler handler = new Handler(Looper.getMainLooper());
-    Runnable animation = new Runnable() {
+
+    Runnable animate = new Runnable() {
         public void run() {
-            if (!stopanimating) {
+            if (!stopAnimating) {
                 updategame();
                 updateGrid(mImageView);
                 handler.postDelayed(this, 500); //in 5 sec player0 will move again
@@ -269,11 +294,13 @@ public class MainActivity extends AppCompatActivity {
   
     // some extra, fun little functions
     public void resetgame() {
-        for (int i = 0; i < 15; i ++) {
+
+        for (int i = 0; i < 15; i++) {
             for (int j = 0; j < 15; j++) {
                 cellstate[i][j] = false;
             }
         }
+        updateGrid(mImageView);
     }
     public void inversegame() {
         for (int i = 0; i < 15; i ++) {

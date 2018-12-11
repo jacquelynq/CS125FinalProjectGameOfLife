@@ -9,5 +9,6 @@
     <string name="play_and_pause">Button for play and pause</string>
     <string name="color_content">Button to switch color of rectangle draw</string>
     <string name="Click_anywhere_to_launch_simulation">Click anywhere to launch simulation </string>
+    <string name="replay_button">button to set initial conditions to zero</string>
 
 </resources>

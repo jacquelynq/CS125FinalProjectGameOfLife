@@ -104,6 +104,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 resetgame();
+                stopAnimating = true;
+                paused = true;
+                imgBtn.setImageResource(R.drawable.ic_play_arrow_black_24dp);
             }
         });
 
@@ -217,12 +220,12 @@ public class MainActivity extends AppCompatActivity {
   
     // some extra, fun little functions
     public void resetgame() {
-        for (int i = 0; i < 15; i ++) {
+
+        for (int i = 0; i < 15; i++) {
             for (int j = 0; j < 15; j++) {
                 cellstate[i][j] = false;
             }
         }
-        updategame();
         updateGrid(mImageView);
     }
     public void inversegame() {
